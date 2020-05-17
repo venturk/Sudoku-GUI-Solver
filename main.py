@@ -56,4 +56,3 @@ def solve(board):
 
 solve(board)
 print_board(board)
-print("*"*200)
