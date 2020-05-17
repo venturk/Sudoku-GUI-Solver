@@ -13,8 +13,17 @@ board = [
 
 
 def print_board(board):
-    for row in board:
-        print(' ', *row)
+    for i, row in enumerate(board):
+        if not i == 0 and not i % 3:  # New horizontal border
+            print("-"*22)
+
+        for j, val in enumerate(row):
+            text = '{}'.format(val)
+            if not j == 0 and not j % 3:  # New vertical border
+                text = "| " + text
+
+            print('{}'.format(text), end=" ")  # Print value
+        print()  # new line
 
 
 def possible(board, row, col, val):
