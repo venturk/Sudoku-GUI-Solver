@@ -26,7 +26,14 @@ def possible(board, row, col, val):
         if board[i][col] == val:
             return False
 
-    # TODO search for same value in same BOX
+    row = (row // 3) * 3  # 1st row index of current box
+    col = (col // 3) * 3  # 1st column index of current box
+
+    for i in range(3):  # Search for same value in same BOX
+        for j in range(3):
+            if board[row + i][col + j] == val:
+                return False
+
     return True
 
 
@@ -45,3 +52,7 @@ def solve(board):
                 return False  # There is no legal digit to assign
 
     return True  # There are no empty cells!
+
+
+solve(board)
+print_board(board)
