@@ -31,5 +31,17 @@ def possible(board, row, col, val):
 
 
 def solve(board):
-    pass
+    for i in range(9):  # for each roe
+        for j in range(9):  # for each column
+            if board[i][j] == 0:  # if cell is empty
+                for val in range(1, 10):  # Digits 1-9
+                    if possible(board, i, j, val):  # Try every possible digit for current cell
+                        board[i][j] = val  # Assign current value
+                        if solve(board):  # Try solving recursively
+                            return True
 
+                        board[i][j] = 0  # We couldn't solve with current digit --> Undo assignment
+
+                return False  # There is no legal digit to assign
+
+    return True  # There are no empty cells!
