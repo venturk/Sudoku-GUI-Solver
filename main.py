@@ -1,3 +1,7 @@
+import tkinter as tk
+import copy
+
+
 class SudokuSolver(object):
     def __init__(self):
         self.__board = None
@@ -5,11 +9,22 @@ class SudokuSolver(object):
         self.__root = None
         self.__labels = None
 
-    def gui_solver(self, b):
-        pass
+    def gui_solver(self, board):
+        self.__is_gui = True
+        self.__board = copy.deepcopy(board)
+        self.__root = tk.Tk()
+        self.__labels = []
 
-    def cmd_solver(self, b):
-        pass
+        self.__draw_board()
+        self.__root.after(1, self.__solve)
+        self.__root.mainloop()
+
+    def cmd_solver(self, board):
+        self.__is_gui = False
+        self.__board = copy.deepcopy(board)
+
+        self.__solve()
+        self.print_board(self.__board)
 
     def __solve(self):
         for i in range(9):  # for each row
@@ -89,6 +104,6 @@ if __name__ == '__main__':
     ]
 
     s = SudokuSolver()
-    s.print_board(board)
-    s.cmd_solver(board)
-    # s.gui_solver(board)
+    s.print_board(board)  # Before solving
+    s.cmd_solver(board)  # After solving
+    s.gui_solver(board)  # GUI solving with animation of backtracking
