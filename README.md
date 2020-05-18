@@ -8,5 +8,4 @@ If you prefer to check out the CMD version, just run main with the cmd_solver() 
 
 # Requierments
 python 3
-
 tkinter
