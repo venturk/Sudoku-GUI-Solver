@@ -1,31 +1,43 @@
 class SudokuSolver(object):
-    def __init__(self, b=None):
-        self._board = b
+    def __init__(self):
+        self.__board = None
+        self.__is_gui = None
+        self.__root = None
+        self.__labels = None
+
+    def gui_solver(self, b):
         pass
 
-    def solve(self):
-        for i in range(9):  # for each roe
+    def cmd_solver(self, b):
+        pass
+
+    def __solve(self):
+        for i in range(9):  # for each row
             for j in range(9):  # for each column
-                if self._board[i][j] == 0:  # if cell is empty
+                if self.__board[i][j] == 0:  # if cell is empty
                     for val in range(1, 10):  # Digits 1-9
-                        if self.possible(i, j, val):  # Try every possible digit for current cell
-                            self._board[i][j] = val  # Assign current value
-                            if self.solve():  # Try solving recursively
+                        if self.__possible(i, j, val):  # Try every possible (i.e legal) digit for current cell
+                            self.__board[i][j] = val  # Assign current value
+                            if self.__is_gui:
+                                self.__update_cell(i, j, val)
+
+                            if self.__solve():  # Try solving recursively
                                 return True
 
-                            self._board[i][j] = 0  # We couldn't solve with current digit --> Undo assignment
-
+                            self.__board[i][j] = 0  # We couldn't solve with current digit --> Undo assignment
+                            if self.__is_gui:
+                                self.__update_cell(i, j, 0)
                     return False  # There is no legal digit to assign
 
-        return True  # There are no empty cells!
+        return True  # There are no empty cells! HOORAY!
 
-    def possible(self, row, col, val):
-        for r in self._board[row]:  # Search for same value in same row
+    def __possible(self, row, col, val):
+        for r in self.__board[row]:  # Search for same value in same row
             if r == val:
                 return False
 
         for i in range(9):  # Search for same value in same column
-            if self._board[i][col] == val:
+            if self.__board[i][col] == val:
                 return False
 
         row = (row // 3) * 3  # 1st row index of current box
@@ -33,13 +45,17 @@ class SudokuSolver(object):
 
         for i in range(3):  # Search for same value in same BOX
             for j in range(3):
-                if self._board[row + i][col + j] == val:
+                if self.__board[row + i][col + j] == val:
                     return False
 
         return True
 
-    def print_board(self):
-        for i, row in enumerate(self._board):
+    @staticmethod
+    def print_board(b):
+        if b is None:
+            return
+
+        for i, row in enumerate(b):
             if not i == 0 and not i % 3:  # New horizontal border
                 print("-" * 22)
 
@@ -50,8 +66,12 @@ class SudokuSolver(object):
 
                 print('{}'.format(text), end=" ")  # Print value
             print()  # new line
+        print()
 
-    def draw_board(self):
+    def __update_cell(self, row, col, value):
+        pass
+
+    def __draw_board(self):
         pass
 
 
@@ -68,7 +88,7 @@ if __name__ == '__main__':
         [0, 4, 9, 2, 0, 6, 0, 0, 7]
     ]
 
-    s = SudokuSolver(board)
-    s.solve()
-    s.print_board()
-
+    s = SudokuSolver()
+    s.print_board(board)
+    s.cmd_solver(board)
+    # s.gui_solver(board)
