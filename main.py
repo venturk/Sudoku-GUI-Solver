@@ -97,8 +97,37 @@ class SudokuSolver(object):
         self.__root.update_idletasks()
         time.sleep(0.025)
 
-    def __draw_board(self):
-        pass
+    def __draw_board(self, fsize=24):
+        import tkinter.font as tkfont
+
+        font = tkfont.Font(size=fsize)
+        row_ind = 0  # row indentation
+
+        for i in range(11):
+            self.__labels.append([])
+            col_ind = 0  # column indentation
+
+            if i == 3 or i == 7:  # Skip horizontal grid lines
+                row_ind += 1
+                continue
+
+            for j in range(11):
+                if j == 3 or j == 7:  # draw horizontal grid lines
+                    tk.Label(self.__root, text="", font=font, borderwidth=2, relief="solid", bg="black")\
+                        .grid(row=i, column=j, ipadx=0, ipady=10)
+                    col_ind += 1
+                    continue
+
+                text = "{}".format(self.__board[i - row_ind][j - col_ind]) if self.__board[i - row_ind][j - col_ind] != 0 else "  "
+                label = tk.Label(self.__root, text=text, font=font, borderwidth=2, relief="solid")
+                label.grid(row=i, column=j, ipadx=20, ipady=10)
+                self.__labels[i - row_ind].append(label)
+
+        for col in [3, 7]:  # Draw vertical grid lines
+            for i in range(11):
+                ipadx = 0 if i == 3 or i == 7 else 29
+                tk.Label(self.__root, text="", font=tkfont.Font(size=1), borderwidth=2, relief="solid", bg="black")\
+                    .grid(row=col, column=i, ipadx=ipadx, ipady=0)
 
 
 if __name__ == '__main__':
