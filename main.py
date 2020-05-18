@@ -84,7 +84,18 @@ class SudokuSolver(object):
         print()
 
     def __update_cell(self, row, col, value):
-        pass
+        import time
+
+        if value:
+            text = "{}".format(value)
+            color = "SpringGreen"
+        else:
+            text = "0"
+            color = "Red"
+
+        self.__labels[row][col].config(text=text, fg=color)
+        self.__root.update_idletasks()
+        time.sleep(0.025)
 
     def __draw_board(self):
         pass
